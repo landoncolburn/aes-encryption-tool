@@ -84,15 +84,27 @@ uint32_t bytes_to_word(uint8_t bytes[4])
     return bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3];
 }
 
+// Print state (4x4 matrix) in line format
 void print_state(uint8_t *state)
 {
     for (int i = 0; i < 16; i++)
     {
-        printf("%02x ", state[i]);
+        printf("%02x", state[i]);
     }
     printf("\n");
 }
 
+void print_state_output(uint8_t *state)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        printf("%02x  %02x  %02x  %02x", state[i * 4], state[i * 4 + 1], state[i * 4 + 2], state[i * 4 + 3]);
+        printf("     ");
+    }
+    printf("\n");
+}
+
+// Print state (4x4 matrix) in block format
 void print_state_block(uint8_t *state)
 {
     for (int i = 0; i < 4; i++)
@@ -105,6 +117,7 @@ void print_state_block(uint8_t *state)
     }
 }
 
+// Load 16 bytes from a file into a buffer
 void load_from_file(char *filename, uint8_t buffer[16])
 {
     FILE *f = fopen(filename, "r");
@@ -121,6 +134,7 @@ void load_from_file(char *filename, uint8_t buffer[16])
     }
 }
 
+// Perform substitution on each byte in the state
 void sub_bytes(uint8_t *state)
 {
     for (int i = 0; i < 16; i++)
@@ -129,6 +143,7 @@ void sub_bytes(uint8_t *state)
     }
 }
 
+// Inverse substitution on each byte in the state
 void inv_sub_bytes(uint8_t *state)
 {
     for (int i = 0; i < 16; i++)
@@ -137,6 +152,7 @@ void inv_sub_bytes(uint8_t *state)
     }
 }
 
+// Shift rows in the state
 void shift_rows(uint8_t *state)
 {
     uint8_t temp[16];
@@ -150,6 +166,7 @@ void shift_rows(uint8_t *state)
     }
 }
 
+// Inverse shift rows in the state
 void inv_shift_rows(uint8_t *state)
 {
     uint8_t temp[16];
@@ -163,6 +180,7 @@ void inv_shift_rows(uint8_t *state)
     }
 }
 
+// Apply the given key (4x 32-bit words) to the state
 void apply_key(uint8_t *state, uint32_t key[4])
 {
     uint8_t temp[16];
@@ -178,6 +196,7 @@ void apply_key(uint8_t *state, uint32_t key[4])
     }
 }
 
+// Mix columns in the state
 void mix_columns(uint8_t *state)
 {
     uint8_t s[16];
@@ -192,6 +211,7 @@ void mix_columns(uint8_t *state)
     }
 }
 
+// Inverse mix columns in the state
 void inv_mix_columns(uint8_t *state)
 {
     uint8_t s[16];
@@ -206,6 +226,7 @@ void inv_mix_columns(uint8_t *state)
     }
 }
 
+// Generate the remaining 40 32-bit words from the given key stored in the first 4 32-bit words
 void generate_keys(uint32_t keys[44])
 {
     for (int round = 1; round < 11; round++)
@@ -225,6 +246,7 @@ void generate_keys(uint32_t keys[44])
     }
 }
 
+// Encrypt the plaintext using the given key and store the result in ciphertext
 void encrypt(uint8_t *plaintext, uint8_t *key, uint8_t *ciphertext)
 {
     uint8_t state[16];
@@ -238,8 +260,21 @@ void encrypt(uint8_t *plaintext, uint8_t *key, uint8_t *ciphertext)
     keys[3] = bytes_to_word(&key[12]);
 
     generate_keys(keys);
-    apply_key(state, &keys[0]);
 
+    printf("Key Schedule:\n");
+    for (int key = 0; key < 11; key++)
+    {
+        printf("%08x,%08x,%08x,%08x\n", keys[key * 4], keys[key * 4 + 1], keys[key * 4 + 2], keys[key * 4 + 3]);
+    }
+    printf("\n");
+
+    printf("ENCRYPTION PROCESS\n");
+    printf("------------------\n");
+    printf("Plain Text:\n");
+    print_state_output(state);
+    printf("\n");
+
+    apply_key(state, &keys[0]);
     for (int round = 1; round < 11; round++)
     {
         sub_bytes(state);
@@ -247,13 +282,23 @@ void encrypt(uint8_t *plaintext, uint8_t *key, uint8_t *ciphertext)
         if (round <= 9)
         {
             mix_columns(state);
+            printf("State after call 1 to MixColumns()\n");
+            printf("-------------------------------------\n");
+            print_state_output(state);
+            printf("\n");
         }
         apply_key(state, &keys[round * 4]);
     }
 
+    printf("CipherText:\n");
+    printf("-------------------------------------\n");
+    print_state_output(state);
+    printf("\n");
+
     memcpy(ciphertext, state, 16);
 }
 
+// Decrypt the ciphertext using the given key and store the result in plaintext
 void decrypt(uint8_t *ciphertext, uint8_t *key, uint8_t *plaintext)
 {
     uint8_t state[16];
@@ -267,18 +312,32 @@ void decrypt(uint8_t *ciphertext, uint8_t *key, uint8_t *plaintext)
     keys[3] = bytes_to_word(&key[12]);
 
     generate_keys(keys);
-    apply_key(state, &keys[40]);
 
+    printf("DECRYPTION PROCESS\n");
+    printf("------------------\n");
+    printf("CipherText:\n");
+    print_state_output(state);
+    printf("\n");
+
+    apply_key(state, &keys[40]);
     for (int round = 9; round >= 1; round--)
     {
         inv_shift_rows(state);
         inv_sub_bytes(state);
         apply_key(state, &keys[round * 4]);
         inv_mix_columns(state);
+        printf("State after call %d to InvMixColumns()\n", 10 - round);
+        printf("-------------------------------------\n");
+        print_state_output(state);
+        printf("\n");
     }
     inv_shift_rows(state);
     inv_sub_bytes(state);
     apply_key(state, &keys[0]);
+
+    printf("Plaintext:\n");
+    print_state_output(state);
+    printf("\n");
 
     memcpy(plaintext, state, 16);
 }
@@ -297,20 +356,20 @@ int main(int argc, char *argv[])
     uint8_t key[16];
     load_from_file(argv[2], key);
 
+    uint8_t ciphertext[16];
+
     printf("Plaintext:\n");
     print_state(plaintext);
 
-    uint8_t ciphertext[16];
-    encrypt(plaintext, key, ciphertext);
+    printf("Key:\n");
+    print_state(key);
 
-    printf("Ciphertext:\n");
-    print_state(ciphertext);
+    encrypt(plaintext, key, ciphertext);
 
     uint8_t decrypted[16];
     decrypt(ciphertext, key, decrypted);
 
-    printf("Decrypted:\n");
-    print_state(decrypted);
+    printf("End of Processing\n");
 
     return 0;
 }
