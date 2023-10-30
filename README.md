@@ -14,6 +14,12 @@ Run the following command to encrypt `plaintext1.txt` with `key1.txt`:
 
 ## Testing
 
+A quick way to test is by running:
+```sh
+make test
+```
+which builds, and runs the program with the plaintext set to `test/test1plaintext.txt` and the key set to `test/test1key.txt`.
+
 The key files:
 - test1key.txt
 - test2key.txt

@@ -11,7 +11,7 @@ a3-program: $(SRCS) $(HDRS)
 	$(CC) $(CFLAGS) -o $@ $(SRCS)
 
 test: $(PROGS)
-	./a3-program test/test0plaintext.txt test/test0key.txt
+	./a3-program test/test1plaintext.txt test/test1key.txt
 
 clean:
 	rm -f $(PROGS) *.o
