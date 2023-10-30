@@ -282,7 +282,7 @@ void encrypt(uint8_t *plaintext, uint8_t *key, uint8_t *ciphertext)
         if (round <= 9)
         {
             mix_columns(state);
-            printf("State after call 1 to MixColumns()\n");
+            printf("State after call %d to MixColumns()\n", round);
             printf("-------------------------------------\n");
             print_state_output(state);
             printf("\n");
@@ -291,7 +291,6 @@ void encrypt(uint8_t *plaintext, uint8_t *key, uint8_t *ciphertext)
     }
 
     printf("CipherText:\n");
-    printf("-------------------------------------\n");
     print_state_output(state);
     printf("\n");
 
@@ -313,7 +312,7 @@ void decrypt(uint8_t *ciphertext, uint8_t *key, uint8_t *plaintext)
 
     generate_keys(keys);
 
-    printf("DECRYPTION PROCESS\n");
+    printf("\n\nDECRYPTION PROCESS\n");
     printf("------------------\n");
     printf("CipherText:\n");
     print_state_output(state);
@@ -358,10 +357,10 @@ int main(int argc, char *argv[])
 
     uint8_t ciphertext[16];
 
-    printf("Plaintext:\n");
+    printf("Plaintext\n");
     print_state(plaintext);
 
-    printf("Key:\n");
+    printf("Key\n");
     print_state(key);
 
     encrypt(plaintext, key, ciphertext);

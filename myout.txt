@@ -1,0 +1,108 @@
+Plaintext
+3243f6a8885a308d313198a2e0370734
+Key
+2b7e151628aed2a6abf7158809cf4f3c
+Key Schedule:
+2b7e1516,28aed2a6,abf71588,09cf4f3c
+a0fafe17,88542cb1,23a33939,2a6c7605
+f2c295f2,7a96b943,5935807a,7359f67f
+3d80477d,4716fe3e,1e237e44,6d7a883b
+ef44a541,a8525b7f,b671253b,db0bad00
+d4d1c6f8,7c839d87,caf2b8bc,11f915bc
+6d88a37a,110b3efd,dbf98641,ca0093fd
+4e54f70e,5f5fc9f3,84a64fb2,4ea6dc4f
+ead27321,b58dbad2,312bf560,7f8d292f
+ac7766f3,19fadc21,28d12941,575c006e
+d014f9a8,c9ee2589,e13f0cc8,b6630ca6
+
+ENCRYPTION PROCESS
+------------------
+Plain Text:
+32  43  f6  a8     88  5a  30  8d     31  31  98  a2     e0  37  07  34     
+
+State after call 1 to MixColumns()
+-------------------------------------
+04  66  81  e5     e0  cb  19  9a     48  f8  d3  7a     28  06  26  4c     
+
+State after call 2 to MixColumns()
+-------------------------------------
+58  4d  ca  f1     1b  4b  5a  ac     db  e7  ca  a8     1b  6b  b0  e5     
+
+State after call 3 to MixColumns()
+-------------------------------------
+75  ec  09  93     20  0b  63  33     53  c0  cf  7c     bb  25  d0  dc     
+
+State after call 4 to MixColumns()
+-------------------------------------
+0f  d6  da  a9     60  31  38  bf     6f  c0  10  6b     5e  b3  13  01     
+
+State after call 5 to MixColumns()
+-------------------------------------
+25  d1  a9  ad     bd  11  d1  68     b6  3a  33  8e     4c  4c  c0  b0     
+
+State after call 6 to MixColumns()
+-------------------------------------
+4b  86  8d  6d     2c  4a  89  80     33  9d  f4  e8     37  d2  18  d8     
+
+State after call 7 to MixColumns()
+-------------------------------------
+14  15  b5  bf     46  16  15  ec     27  46  56  d7     34  2a  d8  43     
+
+State after call 8 to MixColumns()
+-------------------------------------
+00  51  2f  d1     b1  c8  89  ff     54  76  6d  cd     fa  1b  99  ea     
+
+State after call 9 to MixColumns()
+-------------------------------------
+47  37  94  ed     40  d4  e4  a5     a3  70  3a  a6     4c  9f  42  bc     
+
+CipherText:
+39  25  84  1d     02  dc  09  fb     dc  11  85  97     19  6a  0b  32     
+
+
+
+DECRYPTION PROCESS
+------------------
+CipherText:
+39  25  84  1d     02  dc  09  fb     dc  11  85  97     19  6a  0b  32     
+
+State after call 1 to InvMixColumns()
+-------------------------------------
+87  6e  46  a6     f2  4c  e7  8c     4d  90  4a  d8     97  ec  c3  95     
+
+State after call 2 to InvMixColumns()
+-------------------------------------
+be  3b  d4  fe     d4  e1  f2  c8     0a  64  2c  c0     da  83  86  4d     
+
+State after call 3 to InvMixColumns()
+-------------------------------------
+f7  83  40  3f     27  43  3d  f0     9b  b5  31  ff     54  ab  a9  d3     
+
+State after call 4 to InvMixColumns()
+-------------------------------------
+a1  4f  3d  fe     78  e8  03  fc     10  d5  a8  df     4c  63  29  23     
+
+State after call 5 to InvMixColumns()
+-------------------------------------
+e1  fb  96  7c     e8  c8  ae  9b     35  6c  d2  ba     97  4f  fb  53     
+
+State after call 6 to InvMixColumns()
+-------------------------------------
+52  a4  c8  94     85  11  6a  28     e3  cf  2f  d7     f6  50  5e  07     
+
+State after call 7 to InvMixColumns()
+-------------------------------------
+ac  c1  d6  b8     ef  b5  5a  7b     13  23  cf  df     45  73  11  b5     
+
+State after call 8 to InvMixColumns()
+-------------------------------------
+49  db  87  3b     45  39  53  89     7f  02  d2  f1     77  de  96  1a     
+
+State after call 9 to InvMixColumns()
+-------------------------------------
+d4  bf  5d  30     e0  b4  52  ae     b8  41  11  f1     1e  27  98  e5     
+
+Plaintext:
+32  43  f6  a8     88  5a  30  8d     31  31  98  a2     e0  37  07  34     
+
+End of Processing
